@@ -1,6 +1,6 @@
 {
     "recommendations": [
       "redhat.java",
-      "scala.metals"
+      "scalameta.metals"
     ]
 }
