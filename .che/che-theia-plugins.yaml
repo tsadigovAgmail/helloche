@@ -1,2 +1,2 @@
 - id: salesforce/salesforcedx-vscode-core
-  registryUrl: http://192.168.178.55:8080/v3/plugins/
+  registryUrl: http://192.168.178.55:8080/v3/
