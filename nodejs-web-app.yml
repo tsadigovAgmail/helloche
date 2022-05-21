@@ -1,0 +1,72 @@
+schemaVersion: 2.1.0
+metadata:
+  name: nodejs-web-app
+  namespace: admin-che
+projects:
+  - name: web-nodejs-sample
+components:
+  - container:
+      args:
+        - sh
+        - '-c'
+        - '${PLUGIN_REMOTE_ENDPOINT_EXECUTABLE}'
+      endpoints:
+        - exposure: public
+          name: nodejs
+          protocol: http
+          targetPort: 3000
+      env:
+        - name: PLUGIN_REMOTE_ENDPOINT_EXECUTABLE
+          value: /remote-endpoint/plugin-remote-endpoint
+        - name: THEIA_PLUGINS
+          value: 'local-dir:///plugins/sidecars/tools'
+        - name: CHE_DASHBOARD_URL
+          value: 'https://192.168.49.2.nip.io'
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: 'https://192.168.49.2.nip.io/plugin-registry/v3'
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: 'http://plugin-registry.eclipse-che.svc:8080/v3'
+      image: 'quay.io/devfile/universal-developer-image:ubi8-0e189d9'
+      memoryLimit: 1G
+      mountSources: true
+      sourceMapping: /projects
+      volumeMounts:
+        - name: remote-endpoint
+          path: /remote-endpoint
+        - name: plugins
+          path: /plugins
+    name: tools
+commands:
+  - exec:
+      commandLine: npm install
+      component: tools
+      group:
+        isDefault: true
+        kind: build
+      label: Install dependencies
+      workingDir: '${PROJECT_SOURCE}/app'
+    id: install-dependencies
+  - exec:
+      commandLine: nodemon app.js
+      component: tools
+      group:
+        kind: run
+      label: Run web application
+      workingDir: '${PROJECT_SOURCE}/app'
+    id: run-application
+  - exec:
+      commandLine: nodemon --inspect app.js
+      component: tools
+      group:
+        isDefault: true
+        kind: debug
+      label: Run web application (debugging enabled)
+      workingDir: '${PROJECT_SOURCE}/app'
+    id: debug
+  - exec:
+      commandLine: 'node_server_pids=$(pgrep -fx ''.*nodemon (--inspect )?app.js'' | tr "\\n" " ") && echo "Stopping node server with PIDs: ${node_server_pids}" &&  kill -15 ${node_server_pids} &>/dev/null && echo ''Done.'''
+      component: tools
+      group:
+        kind: run
+      label: Stop web application
+    id: stop-application
