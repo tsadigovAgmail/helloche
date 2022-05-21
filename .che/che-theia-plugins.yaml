@@ -1,12 +1,12 @@
-- id: redhat/java8/latest               # mandatory 
-  registryUrl: https://my-registry.com  # optional 
-  override:                             # optional 
-    sidecar:
-      memoryLimit: 1280Mi
-- reference: https://gist.github.com/.../che-theia-plugin.yaml # mandatory 
-  override:                                                    # optional 
-    sidecar:
-      memoryLimit: 1280Mi 
+#- id: redhat/java8/latest               # mandatory 
+#  registryUrl: https://my-registry.com  # optional 
+#  override:                             # optional 
+#    sidecar:
+#      memoryLimit: 1280Mi
+#- reference: https://gist.github.com/.../che-theia-plugin.yaml # mandatory 
+#  override:                                                    # optional 
+#    sidecar:
+#      memoryLimit: 1280Mi 
 - inline:       # <--- same syntax as https://github.com/eclipse/che-plugin-registry/blob/master/che-theia-plugins.yaml
     sidecar:
       image: 'quay.io/eclipse/che-plugin-sidecar:go-c939ba4'
