@@ -1,0 +1,27 @@
+schemaVersion: 2.1.0
+metadata:
+  name: mydevfile
+projects:
+  - name: my-go-project
+    clonePath: go/src/github.com/acme/my-go-project
+    git:
+      remotes:
+        origin: "https://github.com/acme/my-go-project.git"
+components:
+  - name: go-cli
+    container:
+      image: golang
+      memoryLimit: 512Mi
+      mountSources: true
+      command: ['sleep', 'infinity']
+      env:
+        - name: GOPATH
+          value: $(PROJECTS_ROOT)/go
+        - name: GOCACHE
+          value: /tmp/go-cache
+commands:
+  - id: compile and run
+    exec:
+      component: go-cli
+      commandLine: "go get -d && go run main.go"
+      workingDir: "${PROJECTS_ROOT}/src/github.com/acme/my-go-project"

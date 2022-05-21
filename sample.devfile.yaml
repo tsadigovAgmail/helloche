@@ -1,0 +1,18 @@
+schemaVersion: 2.1.0
+metadata:
+  metadata:
+  generateName: devfile-sample
+  version: 2.0.0
+projects:
+  - name: petclinic
+    git:
+      remotes:
+        origin: "https://github.com/spring-projects/spring-petclinic.git"
+      checkoutFrom:
+        revision: main
+commands:
+  - id: build
+    exec:
+    component: mysql
+    commandLine: mvn clean
+    workingDir: /projects/spring-petclinic
